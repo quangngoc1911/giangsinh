@@ -93,6 +93,29 @@
         image-rendering: -webkit-optimize-contrast;
         image-rendering: crisp-edges;
         object-fit: cover;
+        z-index: 101;
+      }
+
+      /* Responsive camera preview cho tablet */
+      @media (max-width: 768px) {
+        #camera-preview {
+          width: 120px;
+          height: 90px;
+          top: 10px;
+          right: 10px;
+        }
+      }
+
+      /* Responsive camera preview cho điện thoại */
+      @media (max-width: 480px) {
+        #camera-preview {
+          width: 90px;
+          height: 68px;
+          top: 8px;
+          right: 8px;
+          border: 1.5px solid rgba(255, 0, 0, 0.5);
+          border-radius: 6px;
+        }
       }
 
       /* Vandiep */
@@ -358,6 +381,15 @@
           padding: 8px 0 !important;
         }
       }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      
+      @keyframes pulse {
+        0%, 100% { opacity: 0.3; transform: scale(0.8); }
+        50% { opacity: 1; transform: scale(1); }
+      }
     </style>
   </head>
   <body>
@@ -430,17 +462,6 @@
         "></div>
       </div>
     </div>
-
-    <style>
-      @keyframes spin {
-        to { transform: rotate(360deg); }
-      }
-      
-      @keyframes pulse {
-        0%, 100% { opacity: 0.3; transform: scale(0.8); }
-        50% { opacity: 1; transform: scale(1); }
-      }
-    </style>
 
     <!-- UI Vandiep -->
     <div id="ui-layer">
@@ -601,15 +622,19 @@
       // ==========================================
       // 2. SYSTEM CONFIG Vandiep
       // ==========================================
-      const CONFIG = {
-        goldCount: 2000,
-        redCount: 300,
-        giftCount: 150,
-        explodeRadius: 65,
-        photoOrbitRadius: 20,
-        treeHeight: 70,
-        treeBaseRadius: 35,
+      const getConfig = () => {
+        const isMobile = window.innerWidth <= 480;
+        return {
+          goldCount: 2000,
+          redCount: 300,
+          giftCount: 150,
+          explodeRadius: 65,
+          photoOrbitRadius: 20,
+          treeHeight: isMobile ? 40 : 70,           // Nhỏ hơn trên điện thoại
+          treeBaseRadius: isMobile ? 20 : 35,       // Nhỏ hơn trên điện thoại
+        };
       };
+      const CONFIG = getConfig();
 
       let scene, camera, renderer;
       let groupGold, groupRed, groupGift;
@@ -1239,10 +1264,13 @@
           selectedIndex = bestIdx;
         } else if (state === "PHOTO") {
           loveMesh.visible = false;
+          const isMobile = window.innerWidth <= 480;
+          const photoScale = isMobile ? 3 : 5;  // Nhỏ hơn trên điện thoại
+          
           photoMeshes.forEach((mesh, i) => {
             if (i === selectedIndex) {
               mesh.position.lerp(new THREE.Vector3(0, 0, 60), 0.1);
-              mesh.scale.lerp(new THREE.Vector3(5, 5, 5), 0.1);
+              mesh.scale.lerp(new THREE.Vector3(photoScale, photoScale, photoScale), 0.1);
               mesh.lookAt(camera.position);
               mesh.rotation.z = 0;
             } else {
