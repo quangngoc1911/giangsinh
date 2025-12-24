@@ -725,7 +725,8 @@
           confettiGroup.material.dispose();
         }
 
-        const confettiCount = 100;
+        const isMobileConfetti = window.innerWidth <= 480;
+        const confettiCount = isMobileConfetti ? 50 : 100;  // Giảm 50% trên mobile
         const positions = [];
         const velocities = [];
         const colors = [];
@@ -1078,20 +1079,26 @@
         if (targetState === "TREE") {
           group.rotation.y += 0.003;
 
-          for (let i = 0; i < count; i++) {
-            sizes[i] = baseSize;
-            let brightness = 1.0;
-            if (type === "red") {
-              brightness = 0.5 + 0.5 * Math.sin(time * 3 + phases[i]);
-            } else if (type === "gold") {
-              brightness = 0.8 + 0.4 * Math.sin(time * 10 + phases[i]);
+          // Trên mobile, chỉ update color mỗi 2 frames để tối ưu
+          const isMobileUpdate = window.innerWidth <= 480;
+          const shouldUpdateColor = !isMobileUpdate || (Math.floor(time * 30) % 2 === 0);
+          
+          if (shouldUpdateColor) {
+            for (let i = 0; i < count; i++) {
+              sizes[i] = baseSize;
+              let brightness = 1.0;
+              if (type === "red") {
+                brightness = 0.5 + 0.5 * Math.sin(time * 3 + phases[i]);
+              } else if (type === "gold") {
+                brightness = 0.8 + 0.4 * Math.sin(time * 10 + phases[i]);
+              }
+              colors[i * 3] = baseColor.r * brightness;
+              colors[i * 3 + 1] = baseColor.g * brightness;
+              colors[i * 3 + 2] = baseColor.b * brightness;
             }
-            colors[i * 3] = baseColor.r * brightness;
-            colors[i * 3 + 1] = baseColor.g * brightness;
-            colors[i * 3 + 2] = baseColor.b * brightness;
+            group.geometry.attributes.color.needsUpdate = true;
+            group.geometry.attributes.size.needsUpdate = true;
           }
-          group.geometry.attributes.color.needsUpdate = true;
-          group.geometry.attributes.size.needsUpdate = true;
         } else if (targetState === "HEART") {
           group.rotation.y = 0;
           const beatScale = 1 + Math.abs(Math.sin(time * 3)) * 0.15;
@@ -1154,7 +1161,8 @@
       function animate() {
         requestAnimationFrame(animate);
         const time = Date.now() * 0.001;
-        const speed = 0.08;
+        const isMobileAnim = window.innerWidth <= 480;
+        const speed = isMobileAnim ? 0.12 : 0.08;  // Tăng speed để animation mượt hơn
         const handRotY = (handX - 0.5) * 4.0;
 
         updateParticleGroup(groupGold, "gold", state, speed, handRotY, time);
@@ -1165,7 +1173,8 @@
           updateSnow(snowGroup, time);
         }
 
-        if (backgroundStars) {
+        // Giảm update background stars trên mobile - chỉ update mỗi 2 frames
+        if (backgroundStars && (Math.floor(time * 30) % 2 === 0 || !isMobileAnim)) {
           backgroundStars.rotation.y += 0.0005;
           const sizes = backgroundStars.geometry.attributes.size.array;
           for (let i = 0; i < sizes.length; i++) {
