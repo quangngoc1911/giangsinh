@@ -77,7 +77,16 @@
           transform: scale(1);
         }
       }
+    .active-tour {
+      outline: 3px solid #ffd700 !important;  /* Viền vàng */
+    }
 
+    .introjs-helperLayer {
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.8),  /* Glow vàng */
+                  0 0 40px rgba(255, 0, 0, 0.6),    /* Glow đỏ */
+                  0 0 60px rgba(255, 0, 0, 0.4),    /* Glow đỏ nhạt */
+                  inset 0 0 0 3px #ffd700;          /* Viền trong vàng */
+    }
       /* Camera Preview Vandiep */
       #camera-preview {
         position: absolute;
@@ -153,6 +162,7 @@
         align-items: center !important;
         flex-direction: row !important;
         width: 100% !important;
+        border-top: none !important
       }
 
       .introjs-button {
@@ -201,7 +211,7 @@
 
       .introjs-button.introjs-skipbutton:hover {
         background: linear-gradient(to bottom, #888, #666) !important;
-        box-shadow: 0 8px 24px rgba(100, 100, 100, 0.4) !important;
+        box-shadow: 0 8px 24px rgba(245, 4, 4, 0.938) !important;
       }
 
       .introjs-bullet {
@@ -313,7 +323,7 @@
     </div>
 
     <!-- Vandiep -->
-    <div id="copyright">© by vandiep</div>
+    <div id="copyright">© by Cá con</div>
 
     <div id="canvas-container"></div>
     <video class="input_video" style="display: none"></video>
