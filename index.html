@@ -132,14 +132,22 @@
       }
 
       #error-log {
-        display: none;
-        position: absolute;
-        top: 0;
-        left: 0;
-        color: red;
-        background: rgba(0, 0, 0, 0.8);
-        z-index: 999;
+        display: block;
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        max-height: 150px;
+        overflow-y: auto;
+        color: #00ff00;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 99999999;
         padding: 10px;
+        font-size: 11px;
+        font-family: monospace;
+        border: 2px solid #00ff00;
+        border-radius: 5px;
+        pointer-events: none;
       }
 
       /* Custom Intro.js styles */
@@ -511,11 +519,55 @@
 
     <script>
       // ==============================================
+      // DEBUG SYSTEM FOR iOS
+      // ==============================================
+      const logs = [];
+      
+      function log(message, type = 'info') {
+        const debugLog = document.getElementById('error-log');
+        if (!debugLog) {
+          console.log(message);
+          return;
+        }
+        
+        const timestamp = new Date().toLocaleTimeString();
+        const color = type === 'error' ? '#ff0000' : type === 'success' ? '#00ff00' : '#ffff00';
+        const logMsg = `[${timestamp}] ${message}`;
+        logs.push(logMsg);
+        
+        // Keep only last 10 logs
+        if (logs.length > 10) logs.shift();
+        
+        debugLog.innerHTML = logs.map(l => `<div style="margin:2px 0;">${l}</div>`).join('');
+        console.log(logMsg);
+      }
+      
+      // Capture all errors
+      window.onerror = function(msg, url, line, col, error) {
+        log(`ERROR: ${msg} at ${line}:${col}`, 'error');
+        return false;
+      };
+      
+      window.addEventListener('unhandledrejection', function(e) {
+        log(`PROMISE ERROR: ${e.reason}`, 'error');
+      });
+      
+      // Wait for DOM to be ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          log('DOM ready', 'success');
+        });
+      } else {
+        log('DOM already ready', 'success');
+      }
+      
+      // ==============================================
       // INTRO.JS TOUR SETUP
       // ==========================================
       let tour = null;
 
       function initTour() {
+        log('initTour() called');
         tour = introJs();
 
         tour.setOptions({
@@ -559,23 +611,43 @@
           disableInteraction: true,
           overlayOpacity: 0.9,
         });
+        
+        log('Tour options set', 'success');
 
         // iOS FIX: Make buttons more tappable without breaking intro.js functionality
         tour.onafterchange(function(targetElement) {
+          const stepNum = this._currentStep + 1;
+          log(`Step ${stepNum}/5 - onafterchange fired`);
+          
           setTimeout(() => {
             const buttons = document.querySelectorAll('.introjs-button');
-            buttons.forEach(button => {
-              // Add larger touch target
+            log(`Found ${buttons.length} buttons`);
+            
+            buttons.forEach((button, idx) => {
               button.style.minHeight = '44px';
               button.style.minWidth = '88px';
               button.style.padding = '12px 20px';
               button.style.fontSize = '14px';
+              
+              // Log button clicks
+              button.addEventListener('click', function(e) {
+                log(`Button ${idx} clicked: ${this.textContent}`, 'success');
+              }, { once: false });
             });
           }, 50);
         });
+        
+        tour.onbeforechange(function(targetElement) {
+          const stepNum = this._currentStep + 1;
+          log(`onbeforechange: Going to step ${stepNum}`);
+          
+          if (targetElement) {
+            log(`Target element: ${targetElement.tagName}.${targetElement.className}`);
+          }
+        });
 
         tour.oncomplete(() => {
-          console.log('Tour hoàn thành!');
+          log('Tour completed!', 'success');
           isRenderingPaused = false;
           const canvasContainer = document.getElementById('canvas-container');
           if (canvasContainer) {
@@ -586,7 +658,7 @@
         });
 
         tour.onexit(() => {
-          console.log('Tour bị hủy');
+          log('Tour exited', 'error');
           isRenderingPaused = false;
           const canvasContainer = document.getElementById('canvas-container');
           if (canvasContainer) {
@@ -603,7 +675,7 @@
       // Chạy tour khi trang load
       window.addEventListener('load', () => {
         setTimeout(() => {
-          console.log('Khởi tạo tour...');
+          log('Initializing tour...');
           initTour();
           if (tour) {
             // CRITICAL iOS FIX: Lower canvas z-index instead of hiding
@@ -617,7 +689,7 @@
                 canvasContainer.style.opacity = '0.1';
                 canvasContainer.style.pointerEvents = 'none';
               }
-              console.log('Tour step - rendering paused');
+              log('Canvas paused - z-index: -1');
             });
             
             tour.oncomplete(function() {
@@ -627,7 +699,7 @@
                 canvasContainer.style.opacity = '1';
                 canvasContainer.style.pointerEvents = 'auto';
               }
-              console.log('Tour complete - rendering resumed');
+              log('Tour complete - canvas resumed', 'success');
             });
             
             tour.onexit(function() {
@@ -637,7 +709,7 @@
                 canvasContainer.style.opacity = '1';
                 canvasContainer.style.pointerEvents = 'auto';
               }
-              console.log('Tour exit - rendering resumed');
+              log('Tour exit - canvas resumed', 'error');
             });
             
             // Force lower z-index before starting
@@ -647,9 +719,12 @@
             }
             isRenderingPaused = true;
             
+            log('Starting tour...', 'success');
             tour.start();
+          } else {
+            log('Tour object is null!', 'error');
           }
-        }, 500); // Increased timeout for iOS
+        }, 500);
       });
 
       // ==========================================
