@@ -202,9 +202,9 @@
         color: #fff !important;
         border: 2px solid #ffd700 !important;
         border-radius: 6px !important;
-        padding: 8px 16px !important;
+        padding: 12px 20px !important;
         font-weight: 700 !important;
-        font-size: 12px !important;
+        font-size: 14px !important;
         cursor: pointer !important;
         transition: all 0.3s ease !important;
         display: inline-flex !important;
@@ -212,9 +212,9 @@
         justify-content: center !important;
         text-align: center !important;
         white-space: nowrap !important;
-        min-height: 36px !important;
-        min-width: 80px !important;
-        margin: 0 !important;
+        min-height: 44px !important;
+        min-width: 88px !important;
+        margin: 0 4px !important;
         box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3) !important;
         text-decoration: none !important;
         flex-shrink: 0 !important;
@@ -333,10 +333,10 @@
         }
 
         .introjs-button {
-          padding: 8px 14px !important;
-          font-size: 12px !important;
-          min-width: 75px !important;
-          min-height: 34px !important;
+          padding: 10px 16px !important;
+          font-size: 13px !important;
+          min-width: 80px !important;
+          min-height: 44px !important;
           flex: 0 0 auto !important;
         }
 
@@ -368,10 +368,10 @@
           font-size: 10px !important;
         }
         .introjs-button {
-          padding: 6px 10px !important;
-          font-size: 10px !important;
-          min-width: 65px !important;
-          min-height: 30px !important;
+          padding: 8px 12px !important;
+          font-size: 12px !important;
+          min-width: 75px !important;
+          min-height: 44px !important;
           flex: 0 1 auto !important;
           font-weight: 800 !important;
           -webkit-font-smoothing: antialiased !important;
@@ -548,7 +548,7 @@
           highlightClass: 'active-tour',
           buttonClass: 'introjs-button',
           showBullets: true,
-          scrollToElement: false, // CRITICAL: Disable scrolling on iOS
+          scrollToElement: false,
           padding: 15,
           doneLabel: '✨ Bắt đầu!',
           nextLabel: '→ Tiếp theo',
@@ -556,33 +556,22 @@
           skipLabel: '⊗',
           exitOnEsc: false,
           exitOnOverlayClick: false,
-          disableInteraction: true, // CRITICAL: Force disable interaction during tour
+          disableInteraction: true,
           overlayOpacity: 0.9,
         });
 
-        // iOS FIX: Add touch event listeners after tour initializes
+        // iOS FIX: Make buttons more tappable without breaking intro.js functionality
         tour.onafterchange(function(targetElement) {
           setTimeout(() => {
             const buttons = document.querySelectorAll('.introjs-button');
             buttons.forEach(button => {
-              // Remove old listeners
-              button.replaceWith(button.cloneNode(true));
+              // Add larger touch target
+              button.style.minHeight = '44px';
+              button.style.minWidth = '88px';
+              button.style.padding = '12px 20px';
+              button.style.fontSize = '14px';
             });
-            
-            // Re-query after clone
-            const newButtons = document.querySelectorAll('.introjs-button');
-            newButtons.forEach(button => {
-              button.style.cursor = 'pointer';
-              button.style.touchAction = 'manipulation';
-              
-              // Add both click and touchend for iOS
-              button.addEventListener('touchend', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                this.click();
-              }, { passive: false });
-            });
-          }, 100);
+          }, 50);
         });
 
         tour.oncomplete(() => {
