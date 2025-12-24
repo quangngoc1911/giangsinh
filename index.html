@@ -579,7 +579,8 @@
           isRenderingPaused = false;
           const canvasContainer = document.getElementById('canvas-container');
           if (canvasContainer) {
-            canvasContainer.style.visibility = 'visible';
+            canvasContainer.style.zIndex = '';
+            canvasContainer.style.opacity = '1';
             canvasContainer.style.pointerEvents = 'auto';
           }
         });
@@ -589,7 +590,8 @@
           isRenderingPaused = false;
           const canvasContainer = document.getElementById('canvas-container');
           if (canvasContainer) {
-            canvasContainer.style.visibility = 'visible';
+            canvasContainer.style.zIndex = '';
+            canvasContainer.style.opacity = '1';
             canvasContainer.style.pointerEvents = 'auto';
           }
         });
@@ -604,14 +606,15 @@
           console.log('Khởi tạo tour...');
           initTour();
           if (tour) {
-            // CRITICAL iOS FIX: Completely stop canvas rendering during tour
+            // CRITICAL iOS FIX: Lower canvas z-index instead of hiding
             const canvasContainer = document.getElementById('canvas-container');
             
             // Pause rendering when tour starts
             tour.onbeforechange(function(targetElement) {
               isRenderingPaused = true;
               if (canvasContainer) {
-                canvasContainer.style.visibility = 'hidden';
+                canvasContainer.style.zIndex = '-1';
+                canvasContainer.style.opacity = '0.1';
                 canvasContainer.style.pointerEvents = 'none';
               }
               console.log('Tour step - rendering paused');
@@ -620,7 +623,8 @@
             tour.oncomplete(function() {
               isRenderingPaused = false;
               if (canvasContainer) {
-                canvasContainer.style.visibility = 'visible';
+                canvasContainer.style.zIndex = '';
+                canvasContainer.style.opacity = '1';
                 canvasContainer.style.pointerEvents = 'auto';
               }
               console.log('Tour complete - rendering resumed');
@@ -629,15 +633,17 @@
             tour.onexit(function() {
               isRenderingPaused = false;
               if (canvasContainer) {
-                canvasContainer.style.visibility = 'visible';
+                canvasContainer.style.zIndex = '';
+                canvasContainer.style.opacity = '1';
                 canvasContainer.style.pointerEvents = 'auto';
               }
               console.log('Tour exit - rendering resumed');
             });
             
-            // Force hide canvas before starting
+            // Force lower z-index before starting
             if (canvasContainer) {
-              canvasContainer.style.visibility = 'hidden';
+              canvasContainer.style.zIndex = '-1';
+              canvasContainer.style.opacity = '0.1';
             }
             isRenderingPaused = true;
             
