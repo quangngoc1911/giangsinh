@@ -110,8 +110,8 @@
       @media (max-width: 480px) {
         #camera-preview {
           width: 90px;
-          height: 73px;
-          top: 60px;
+          height: 68px;
+          top: 35px;
           right: 8px;
           border: 1.5px solid rgba(255, 0, 0, 0.5);
           border-radius: 6px;
@@ -1031,7 +1031,11 @@
           transparent: true,
           blending: THREE.AdditiveBlending,
         });
-        starMesh = new THREE.Mesh(new THREE.PlaneGeometry(12, 12), starMat);
+        
+        // Responsive star size - nhỏ hơn trên điện thoại
+        const isMobileStar = window.innerWidth <= 480;
+        const starSize = isMobileStar ? 6 : 12;  // Nhỏ 50% trên mobile
+        starMesh = new THREE.Mesh(new THREE.PlaneGeometry(starSize, starSize), starMat);
         starMesh.position.set(0, CONFIG.treeHeight / 2 + 2, 0);
         scene.add(starMesh);
 
