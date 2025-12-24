@@ -397,7 +397,7 @@
         to { transform: rotate(360deg); }
       }
       
-      @keyframes pulse {
+      @keyframes pulse-dots {
         0%, 100% { opacity: 0.3; transform: scale(0.8); }
         50% { opacity: 1; transform: scale(1); }
       }
@@ -455,21 +455,21 @@
           height: 12px;
           background: #ffd700;
           border-radius: 50%;
-          animation: pulse 1.5s ease-in-out infinite;
+          animation: pulse-dots 1.5s ease-in-out infinite;
         "></div>
         <div style="
           width: 12px;
           height: 12px;
           background: #ffd700;
           border-radius: 50%;
-          animation: pulse 1.5s ease-in-out 0.3s infinite;
+          animation: pulse-dots 1.5s ease-in-out 0.3s infinite;
         "></div>
         <div style="
           width: 12px;
           height: 12px;
           background: #ffd700;
           border-radius: 50%;
-          animation: pulse 1.5s ease-in-out 0.6s infinite;
+          animation: pulse-dots 1.5s ease-in-out 0.6s infinite;
         "></div>
       </div>
     </div>
@@ -489,11 +489,12 @@
     <div id="copyright">© by Cá con</div>
 
     <div id="canvas-container"></div>
-    <video class="input_video" style="display: none"></video>
+    <!-- iOS compatibility: thêm playsinline và webkit-playsinline -->
+    <video class="input_video" style="display: none" playsinline webkit-playsinline></video>
     <canvas id="camera-preview"></canvas>
 
     <script>
-      // ==========================================
+      // ==============================================
       // INTRO.JS TOUR SETUP
       // ==========================================
       let tour = null;
@@ -636,9 +637,9 @@
       const getConfig = () => {
         const isMobile = window.innerWidth <= 480;
         return {
-          goldCount: isMobile ? 1000 : 2000,        // Giảm 50% trên mobile
-          redCount: isMobile ? 150 : 300,           // Giảm 50% trên mobile
-          giftCount: isMobile ? 75 : 150,           // Giảm 50% trên mobile
+          goldCount: isMobile ? 1000 : 2000,
+          redCount: isMobile ? 150 : 300,
+          giftCount: isMobile ? 75 : 150,
           explodeRadius: 65,
           photoOrbitRadius: 20,
           treeHeight: isMobile ? 40 : 70,
@@ -679,7 +680,6 @@
         const isMobileRenderer = window.innerWidth <= 480;
         renderer = new THREE.WebGLRenderer({ antialias: isMobileRenderer ? false : true, alpha: false });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        // Giảm pixel ratio trên mobile để mượt hơn
         renderer.setPixelRatio(isMobileRenderer ? 1 : Math.min(window.devicePixelRatio, 2));
         container.appendChild(renderer.domElement);
 
@@ -696,7 +696,7 @@
 
       function createBackgroundStars() {
         const isMobileStars = window.innerWidth <= 480;
-        const starCount = isMobileStars ? 150 : 300;  // Giảm 50% trên mobile
+        const starCount = isMobileStars ? 150 : 300;
         const positions = [];
         const sizes = [];
 
@@ -729,61 +729,9 @@
         scene.add(backgroundStars);
       }
 
-      function createConfetti() {
-        if (confettiGroup) {
-          scene.remove(confettiGroup);
-          confettiGroup.geometry.dispose();
-          confettiGroup.material.dispose();
-        }
-
-        const isMobileConfetti = window.innerWidth <= 480;
-        const confettiCount = isMobileConfetti ? 50 : 100;  // Giảm 50% trên mobile
-        const positions = [];
-        const velocities = [];
-        const colors = [];
-        const sizes = [];
-
-        const colorPalette = [0xffd700, 0xff6b6b, 0x4ecdc4, 0xffd93d, 0x6bcf7f];
-
-        for (let i = 0; i < confettiCount; i++) {
-          positions.push(0, 0, 0);
-          velocities.push(
-            (Math.random() - 0.5) * 2,
-            Math.random() * 2 + 1,
-            (Math.random() - 0.5) * 2
-          );
-          const color = new THREE.Color(
-            colorPalette[Math.floor(Math.random() * colorPalette.length)]
-          );
-          colors.push(color.r, color.g, color.b);
-          sizes.push(1 + Math.random() * 2);
-        }
-
-        const geo = new THREE.BufferGeometry();
-        geo.setAttribute(
-          "position",
-          new THREE.Float32BufferAttribute(positions, 3)
-        );
-        geo.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
-        geo.setAttribute("size", new THREE.Float32BufferAttribute(sizes, 1));
-        geo.userData = { velocities: velocities, life: 0 };
-
-        const mat = new THREE.PointsMaterial({
-          size: 3,
-          vertexColors: true,
-          transparent: true,
-          opacity: 1.0,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false,
-        });
-
-        confettiGroup = new THREE.Points(geo, mat);
-        scene.add(confettiGroup);
-      }
-
       function createSnowSystem() {
         const isMobileSnow = window.innerWidth <= 480;
-        const snowCount = isMobileSnow ? 300 : 800;  // Giảm 62% trên mobile
+        const snowCount = isMobileSnow ? 300 : 800;
         const positions = [];
         const velocities = [];
         const sizes = [];
@@ -1007,7 +955,6 @@
         });
         titleMesh = new THREE.Mesh(new THREE.PlaneGeometry(60, 15), mat);
         
-        // Responsive title position - đẩy xuống trên điện thoại nhưng không che cây
         const isMobileInit = window.innerWidth <= 480;
         titleMesh.position.set(0, isMobileInit ? 35 : 50, 0);
         scene.add(titleMesh);
@@ -1043,9 +990,8 @@
           blending: THREE.AdditiveBlending,
         });
         
-        // Responsive star size - nhỏ hơn trên điện thoại
         const isMobileStar = window.innerWidth <= 480;
-        const starSize = isMobileStar ? 6 : 12;  // Nhỏ 50% trên mobile
+        const starSize = isMobileStar ? 6 : 12;
         starMesh = new THREE.Mesh(new THREE.PlaneGeometry(starSize, starSize), starMat);
         starMesh.position.set(0, CONFIG.treeHeight / 2 + 2, 0);
         scene.add(starMesh);
@@ -1094,7 +1040,6 @@
         if (targetState === "TREE") {
           group.rotation.y += 0.003;
 
-          // Trên mobile, chỉ update color mỗi 2 frames để tối ưu
           const isMobileUpdate = window.innerWidth <= 480;
           const shouldUpdateColor = !isMobileUpdate || (Math.floor(time * 30) % 2 === 0);
           
@@ -1150,7 +1095,6 @@
       function updateSnow(snowGroup, time) {
         const positions = snowGroup.geometry.attributes.position.array;
         const velocities = snowGroup.geometry.userData.velocities;
-        const originalPositions = snowGroup.geometry.userData.originalPositions;
         const rotations = snowGroup.geometry.userData.rotations;
 
         snowGroup.rotation.y += 0.001;
@@ -1177,7 +1121,7 @@
         requestAnimationFrame(animate);
         const time = Date.now() * 0.001;
         const isMobileAnim = window.innerWidth <= 480;
-        const speed = isMobileAnim ? 0.12 : 0.08;  // Tăng speed để animation mượt hơn
+        const speed = isMobileAnim ? 0.12 : 0.08;
         const handRotY = (handX - 0.5) * 4.0;
 
         updateParticleGroup(groupGold, "gold", state, speed, handRotY, time);
@@ -1188,7 +1132,6 @@
           updateSnow(snowGroup, time);
         }
 
-        // Giảm update background stars trên mobile - chỉ update mỗi 2 frames
         if (backgroundStars && (Math.floor(time * 30) % 2 === 0 || !isMobileAnim)) {
           backgroundStars.rotation.y += 0.0005;
           const sizes = backgroundStars.geometry.attributes.size.array;
@@ -1202,38 +1145,6 @@
           titleMesh.rotation.y = Math.sin(time * 0.5) * 0.05;
           titleMesh.material.opacity = 0.8 + Math.sin(time * 3) * 0.2;
           titleMesh.scale.setScalar(1 + Math.sin(time * 2) * 0.05);
-        }
-
-        if (confettiGroup) {
-          const positions = confettiGroup.geometry.attributes.position.array;
-          const velocities = confettiGroup.geometry.userData.velocities;
-          confettiGroup.geometry.userData.life += 0.016;
-
-          let allDead = true;
-          for (let i = 0; i < positions.length; i += 3) {
-            const idx = i / 3;
-            positions[i] += velocities[idx * 3];
-            positions[i + 1] += velocities[idx * 3 + 1];
-            positions[i + 2] += velocities[idx * 3 + 2];
-
-            velocities[idx * 3 + 1] -= 0.05;
-
-            if (positions[i + 1] > -100) allDead = false;
-          }
-
-          confettiGroup.geometry.attributes.position.needsUpdate = true;
-
-          confettiGroup.material.opacity = Math.max(
-            0,
-            1 - confettiGroup.geometry.userData.life * 2
-          );
-
-          if (confettiGroup.geometry.userData.life > 2 || allDead) {
-            scene.remove(confettiGroup);
-            confettiGroup.geometry.dispose();
-            confettiGroup.material.dispose();
-            confettiGroup = null;
-          }
         }
 
         photoMeshes.forEach((mesh, i) => {
@@ -1296,7 +1207,7 @@
         } else if (state === "PHOTO") {
           loveMesh.visible = false;
           const isMobile = window.innerWidth <= 480;
-          const photoScale = isMobile ? 3 : 5;  // Nhỏ hơn trên điện thoại
+          const photoScale = isMobile ? 3 : 5;
           
           photoMeshes.forEach((mesh, i) => {
             if (i === selectedIndex) {
@@ -1395,11 +1306,10 @@
           `;
           document.body.appendChild(warningDiv);
           
-          // Ẩn loading screen
           loadingScreen.style.display = 'none';
         };
 
-        // Timeout 10 giây - nếu chưa nhận được frame thì hiển thị cảnh báo
+        // Timeout 10 giây
         cameraTimeout = setTimeout(() => {
           if (!cameraReady && hasRequestedPermission) {
             showCameraTimeoutWarning();
@@ -1475,7 +1385,7 @@
 
         const cameraUtils = new Camera(video, {
           onFrame: async () => {
-            hasRequestedPermission = true;  // Người dùng đã nhấn cho phép
+            hasRequestedPermission = true;
             await hands.send({ image: video });
           },
           width: 640,
