@@ -145,6 +145,8 @@
       /* Custom Intro.js styles */
       .introjs-overlay {
         background-color: rgba(0, 0, 0, 0.8) !important;
+        z-index: 10001 !important;
+        position: fixed !important;
       }
 
       .introjs-tooltip {
@@ -154,6 +156,9 @@
         box-shadow: 0 8px 32px rgba(255, 215, 0, 0.3) !important;
         color: white !important;
         padding: 20px !important;
+        z-index: 10002 !important;
+        position: fixed !important;
+        pointer-events: auto !important;
       }
 
       .introjs-tooltip .introjs-tooltiptext {
@@ -178,6 +183,7 @@
         width: 100% !important;
         border-top: none !important;
         padding-top: 0 !important;
+        pointer-events: auto !important;
       }
 
       .introjs-button {
@@ -206,6 +212,9 @@
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
         letter-spacing: 0.5px !important;
         line-height: 1.2 !important;
+        pointer-events: auto !important;
+        -webkit-touch-callout: none !important;
+        -webkit-user-select: none !important;
       }
 
       .introjs-button:hover {
@@ -296,6 +305,8 @@
                     0 0 40px rgba(255, 0, 0, 0.6) !important,
                     0 0 60px rgba(255, 0, 0, 0.4) !important,
                     inset 0 0 0 3px #ffd700 !important !important;
+        z-index: 10001 !important;
+        position: fixed !important;
       }
 
       /* Responsive cho điện thoại */
