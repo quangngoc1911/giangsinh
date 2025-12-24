@@ -111,7 +111,7 @@
         #camera-preview {
           width: 90px;
           height: 68px;
-          top: 80px;
+          top: 60px;
           right: 8px;
           border: 1.5px solid rgba(255, 0, 0, 0.5);
           border-radius: 6px;
@@ -625,13 +625,13 @@
       const getConfig = () => {
         const isMobile = window.innerWidth <= 480;
         return {
-          goldCount: 2000,
-          redCount: 300,
-          giftCount: 150,
+          goldCount: isMobile ? 1000 : 2000,        // Giảm 50% trên mobile
+          redCount: isMobile ? 150 : 300,           // Giảm 50% trên mobile
+          giftCount: isMobile ? 75 : 150,           // Giảm 50% trên mobile
           explodeRadius: 65,
           photoOrbitRadius: 20,
-          treeHeight: isMobile ? 40 : 70,           // Nhỏ hơn trên điện thoại
-          treeBaseRadius: isMobile ? 20 : 35,       // Nhỏ hơn trên điện thoại
+          treeHeight: isMobile ? 40 : 70,
+          treeBaseRadius: isMobile ? 20 : 35,
         };
       };
       const CONFIG = getConfig();
@@ -665,9 +665,11 @@
         );
         camera.position.z = 100;
 
-        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+        const isMobileRenderer = window.innerWidth <= 480;
+        renderer = new THREE.WebGLRenderer({ antialias: isMobileRenderer ? false : true, alpha: false });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        // Giảm pixel ratio trên mobile để mượt hơn
+        renderer.setPixelRatio(isMobileRenderer ? 1 : Math.min(window.devicePixelRatio, 2));
         container.appendChild(renderer.domElement);
 
         groupGold = createParticleSystem("gold", CONFIG.goldCount, 2.0);
@@ -682,7 +684,8 @@
       }
 
       function createBackgroundStars() {
-        const starCount = 300;
+        const isMobileStars = window.innerWidth <= 480;
+        const starCount = isMobileStars ? 150 : 300;  // Giảm 50% trên mobile
         const positions = [];
         const sizes = [];
 
@@ -767,7 +770,8 @@
       }
 
       function createSnowSystem() {
-        const snowCount = 800;
+        const isMobileSnow = window.innerWidth <= 480;
+        const snowCount = isMobileSnow ? 300 : 800;  // Giảm 62% trên mobile
         const positions = [];
         const velocities = [];
         const sizes = [];
@@ -990,7 +994,10 @@
           side: THREE.DoubleSide,
         });
         titleMesh = new THREE.Mesh(new THREE.PlaneGeometry(60, 15), mat);
-        titleMesh.position.set(0, 50, 0);
+        
+        // Responsive title position - đẩy xuống trên điện thoại
+        const isMobileInit = window.innerWidth <= 480;
+        titleMesh.position.set(0, isMobileInit ? 20 : 50, 0);
         scene.add(titleMesh);
 
         const starCanvas = document.createElement("canvas");
