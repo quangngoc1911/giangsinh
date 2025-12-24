@@ -19,7 +19,10 @@
       crossorigin="anonymous"
     ></script>
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/8.3.2/introjs.min.css" rel="stylesheet">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/8.3.2/introjs.min.css"
+      rel="stylesheet"
+    />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/8.3.2/intro.min.js"></script>
 
     <style>
@@ -256,34 +259,25 @@
 
       .introjs-button.introjs-skipbutton:hover {
         background: linear-gradient(to bottom, #777, #555) !important;
-        box-shadow: 
-          0 0 0 0 rgba(255, 0, 0, 0.7),
-          0 0 0 4px rgba(255, 0, 0, 0.5),
-          0 0 0 8px rgba(255, 0, 0, 0.3),
-          0 8px 24px rgba(100, 100, 100, 0.4) !important;
+        box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7), 0 0 0 4px rgba(255, 0, 0, 0.5),
+          0 0 0 8px rgba(255, 0, 0, 0.3), 0 8px 24px rgba(100, 100, 100, 0.4) !important;
         animation: pulse-ring 0.6s ease-out infinite !important;
       }
 
       @keyframes pulse-ring {
         0% {
-          box-shadow: 
-            0 0 0 0 rgba(255, 0, 0, 0.9),
-            0 0 0 4px rgba(255, 0, 0, 0.6),
-            0 0 0 8px rgba(255, 0, 0, 0.3),
+          box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.9),
+            0 0 0 4px rgba(255, 0, 0, 0.6), 0 0 0 8px rgba(255, 0, 0, 0.3),
             0 8px 24px rgba(100, 100, 100, 0.4);
         }
         50% {
-          box-shadow: 
-            0 0 0 8px rgba(255, 0, 0, 0.4),
-            0 0 0 12px rgba(255, 0, 0, 0.3),
-            0 0 0 16px rgba(255, 0, 0, 0.1),
+          box-shadow: 0 0 0 8px rgba(255, 0, 0, 0.4),
+            0 0 0 12px rgba(255, 0, 0, 0.3), 0 0 0 16px rgba(255, 0, 0, 0.1),
             0 8px 24px rgba(100, 100, 100, 0.4);
         }
         100% {
-          box-shadow: 
-            0 0 0 16px rgba(255, 0, 0, 0),
-            0 0 0 20px rgba(255, 0, 0, 0),
-            0 0 0 24px rgba(255, 0, 0, 0),
+          box-shadow: 0 0 0 16px rgba(255, 0, 0, 0),
+            0 0 0 20px rgba(255, 0, 0, 0), 0 0 0 24px rgba(255, 0, 0, 0),
             0 8px 24px rgba(100, 100, 100, 0.4);
         }
       }
@@ -323,9 +317,9 @@
 
       .introjs-helperLayer {
         box-shadow: 0 0 20px rgba(255, 215, 0, 0.8) !important,
-                    0 0 40px rgba(255, 0, 0, 0.6) !important,
-                    0 0 60px rgba(255, 0, 0, 0.4) !important,
-                    inset 0 0 0 3px #ffd700 !important !important;
+          0 0 40px rgba(255, 0, 0, 0.6) !important,
+          0 0 60px rgba(255, 0, 0, 0.4) !important,
+          inset 0 0 0 3px #ffd700 !important !important;
         z-index: 9999998 !important;
         position: fixed !important;
         -webkit-transform: translate3d(0, 0, 0) !important;
@@ -376,7 +370,7 @@
           font-size: 10px !important;
         }
         .introjs-tooltipReferenceLayer {
-            visibility: visible;
+          visibility: visible;
         }
         .introjs-button {
           padding: 8px 12px !important;
@@ -421,83 +415,108 @@
       }
 
       @keyframes spin {
-        to { transform: rotate(360deg); }
+        to {
+          transform: rotate(360deg);
+        }
       }
-      
+
       @keyframes pulse-dots {
-        0%, 100% { opacity: 0.3; transform: scale(0.8); }
-        50% { opacity: 1; transform: scale(1); }
+        0%,
+        100% {
+          opacity: 0.3;
+          transform: scale(0.8);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1);
+        }
       }
     </style>
   </head>
   <body>
     <!-- Loading screen khi chờ camera -->
-    <div id="loading-screen" style="
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.95);
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 10000;
-      gap: 20px;
-    ">
-      <div style="
-        width: 60px;
-        height: 60px;
-        border: 4px solid rgba(255, 215, 0, 0.3);
-        border-top-color: #ffd700;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-      "></div>
-      
-      <h2 style="
-        color: #ffd700;
-        font-size: 24px;
-        margin: 0;
-        text-align: center;
-      ">Đang mở camera...</h2>
-      
-      <p style="
-        color: rgba(255, 255, 255, 0.7);
-        font-size: 14px;
-        margin: 0;
-        text-align: center;
-        max-width: 300px;
-      ">Vui lòng cho phép truy cập camera để bắt đầu</p>
-
-      <div style="
-        margin-top: 20px;
-        display: flex;
-        gap: 10px;
+    <div
+      id="loading-screen"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        display: none;
+        flex-direction: column;
+        align-items: center;
         justify-content: center;
-        flex-wrap: wrap;
-      ">
-        <div style="
-          width: 12px;
-          height: 12px;
-          background: #ffd700;
+        z-index: 10000;
+        gap: 20px;
+      "
+    >
+      <div
+        style="
+          width: 60px;
+          height: 60px;
+          border: 4px solid rgba(255, 215, 0, 0.3);
+          border-top-color: #ffd700;
           border-radius: 50%;
-          animation: pulse-dots 1.5s ease-in-out infinite;
-        "></div>
-        <div style="
-          width: 12px;
-          height: 12px;
-          background: #ffd700;
-          border-radius: 50%;
-          animation: pulse-dots 1.5s ease-in-out 0.3s infinite;
-        "></div>
-        <div style="
-          width: 12px;
-          height: 12px;
-          background: #ffd700;
-          border-radius: 50%;
-          animation: pulse-dots 1.5s ease-in-out 0.6s infinite;
-        "></div>
+          animation: spin 1s linear infinite;
+        "
+      ></div>
+
+      <h2
+        style="color: #ffd700; font-size: 24px; margin: 0; text-align: center"
+      >
+        Đang mở camera...
+      </h2>
+
+      <p
+        style="
+          color: rgba(255, 255, 255, 0.7);
+          font-size: 14px;
+          margin: 0;
+          text-align: center;
+          max-width: 300px;
+        "
+      >
+        Vui lòng cho phép truy cập camera để bắt đầu
+      </p>
+
+      <div
+        style="
+          margin-top: 20px;
+          display: flex;
+          gap: 10px;
+          justify-content: center;
+          flex-wrap: wrap;
+        "
+      >
+        <div
+          style="
+            width: 12px;
+            height: 12px;
+            background: #ffd700;
+            border-radius: 50%;
+            animation: pulse-dots 1.5s ease-in-out infinite;
+          "
+        ></div>
+        <div
+          style="
+            width: 12px;
+            height: 12px;
+            background: #ffd700;
+            border-radius: 50%;
+            animation: pulse-dots 1.5s ease-in-out 0.3s infinite;
+          "
+        ></div>
+        <div
+          style="
+            width: 12px;
+            height: 12px;
+            background: #ffd700;
+            border-radius: 50%;
+            animation: pulse-dots 1.5s ease-in-out 0.6s infinite;
+          "
+        ></div>
       </div>
     </div>
 
@@ -517,7 +536,12 @@
 
     <div id="canvas-container"></div>
     <!-- iOS compatibility: thêm playsinline và webkit-playsinline -->
-    <video class="input_video" style="display: none" playsinline webkit-playsinline></video>
+    <video
+      class="input_video"
+      style="display: none"
+      playsinline
+      webkit-playsinline
+    ></video>
     <canvas id="camera-preview"></canvas>
 
     <script>
@@ -525,45 +549,52 @@
       // DEBUG SYSTEM FOR iOS
       // ==============================================
       const logs = [];
-      
-      function log(message, type = 'info') {
-        const debugLog = document.getElementById('error-log');
+
+      function log(message, type = "info") {
+        const debugLog = document.getElementById("error-log");
         if (!debugLog) {
           console.log(message);
           return;
         }
-        
+
         const timestamp = new Date().toLocaleTimeString();
-        const color = type === 'error' ? '#ff0000' : type === 'success' ? '#00ff00' : '#ffff00';
+        const color =
+          type === "error"
+            ? "#ff0000"
+            : type === "success"
+            ? "#00ff00"
+            : "#ffff00";
         const logMsg = `[${timestamp}] ${message}`;
         logs.push(logMsg);
-        
+
         // Keep only last 10 logs
         if (logs.length > 10) logs.shift();
-        
-        debugLog.innerHTML = logs.map(l => `<div style="margin:2px 0;">${l}</div>`).join('');
+
+        debugLog.innerHTML = logs
+          .map((l) => `<div style="margin:2px 0;">${l}</div>`)
+          .join("");
         console.log(logMsg);
       }
-      
+
       // Capture all errors
-      window.onerror = function(msg, url, line, col, error) {
-        log(`ERROR: ${msg} at ${line}:${col}`, 'error');
+      window.onerror = function (msg, url, line, col, error) {
+        log(`ERROR: ${msg} at ${line}:${col}`, "error");
         return false;
       };
-      
-      window.addEventListener('unhandledrejection', function(e) {
-        log(`PROMISE ERROR: ${e.reason}`, 'error');
+
+      window.addEventListener("unhandledrejection", function (e) {
+        log(`PROMISE ERROR: ${e.reason}`, "error");
       });
-      
+
       // Wait for DOM to be ready
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-          log('DOM ready', 'success');
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", () => {
+          log("DOM ready", "success");
         });
       } else {
-        log('DOM already ready', 'success');
+        log("DOM already ready", "success");
       }
-      
+
       // ==============================================
       // INTRO.JS TOUR SETUP
       // ==========================================
@@ -571,231 +602,238 @@
 
       function initTour() {
         try {
-          log('initTour() called');
+          log("initTour() called");
           tour = introJs();
 
           tour.setOptions({
             steps: [
               {
-                intro: '👋 <strong>Chào mừng Hân đến Magic Christmas!</strong><br><br>Cá sẽ hướng dẫn Hân sử dụng ứng dụng này. Sử dụng trên laptop sẽ cho hiệu ứng mượt và đẹp hơn á nhen.<br><br>Dùng các cử chỉ tay để tương tác với hiệu ứng 3D tuyệt đẹp.',
-                position: 'center'
+                intro:
+                  "👋 <strong>Chào mừng Hân đến Magic Christmas!</strong><br><br>Cá sẽ hướng dẫn Hân sử dụng ứng dụng này. Sử dụng trên laptop sẽ cho hiệu ứng mượt và đẹp hơn á nhen với lại có nhạc nữa á ^^. <br><br>Dùng các cử chỉ tay để tương tác với hiệu ứng 3D tuyệt đẹp.",
+                position: "center",
               },
               {
-                element: '.guide',
-                intro: '📖 <strong>Hướng dẫn cử chỉ tay:</strong><br><br>🖐️ <b>Mở tay:</b> mở lòng bàn tay là hiệu ứng nổ. Lúc này sẽ có thể chọn ảnh.<br>🤏 <b>Ghim:</b> chụm từ từ 2 đầu ngón tay lại để chọn ảnh<br>✊ <b>Nắm tay:</b> sẽ hiển thị cây thông<br>👍 <b>Giơ ngón cái:</b> là hiệu ứng tuyết rơi',
-                position: 'bottom'
+                element: ".guide",
+                intro:
+                  "📖 <strong>Hướng dẫn cử chỉ tay:</strong><br><br>🖐️ <b>Mở tay:</b> mở lòng bàn tay là hiệu ứng nổ. Lúc này sẽ có thể chọn ảnh.<br>🤏 <b>Ghim:</b> xòe bàn tay rùi chụm từ từ 2 đầu ngón tay lại để chọn ảnh<br>✊ <b>Nắm tay:</b> sẽ hiển thị cây thông<br>👍 <b>Giơ ngón cái:</b> là hiệu ứng tuyết rơi",
+                position: "bottom",
               },
               {
-                element: '#camera-preview',
-                intro: '📹 <strong>Camera của em bé</strong><br><br>Ứng dụng sẽ theo dõi chuyển động tay của Hân từ camera này. Hấn nhớ cho phép truy cập camera nghen!',
-                position: 'left'
+                element: "#camera-preview",
+                intro:
+                  "📹 <strong>Camera của em bé</strong><br><br>Ứng dụng sẽ theo dõi chuyển động tay của Hân từ camera ở chổ này nè. Hân nhớ cho phép truy cập camera nghen!",
+                position: "left",
               },
               {
-                element: '#btnStart',
-                intro: '🎯 <strong>Nút START MAGIC</strong><br><br>Nhấn nút này để bắt đầu ứng dụng và sử dụng các cử chỉ tay để điều khiển.',
-                position: 'top'
+                element: "#btnStart",
+                intro:
+                  "🎯 <strong>Nút START MAGIC</strong><br><br>Nhấn nút này để bắt đầu ứng dụng và sử dụng các cử chỉ tay để điều khiển.",
+                position: "top",
               },
               {
-                intro: '✨ <strong>Thành công!</strong><br><br>Hân đã hoàn thành các bước hướng dẫn. Nhhấn nút <b>START MAGIC</b> để bắt đầu trải nghiệm Magic Christmas.<br><br>Chúc Hâm xem vui vẻ nà! 🎄❤️',
-                position: 'center'
-              }
+                intro:
+                  "✨ <strong>Thành công!</strong><br><br>Hân đã hoàn thành các bước hướng dẫn. Nhấn nút <b>START MAGIC</b> để bắt đầu trải nghiệm Magic Christmas.<br><br>Chúc Hâm xem vui vẻ nà! 🎄❤️",
+                position: "center",
+              },
             ],
-            tooltipPosition: 'bottom',
-            highlightClass: 'active-tour',
-            buttonClass: 'introjs-button',
+            tooltipPosition: "bottom",
+            highlightClass: "active-tour",
+            buttonClass: "introjs-button",
             showBullets: true,
             scrollToElement: false,
             padding: 15,
-            doneLabel: '✨ Bắt đầu!',
-            nextLabel: ' Tiếp theo →',
-            prevLabel: '← Quay lại',
-            skipLabel: '⊗',
+            doneLabel: "✨ Bắt đầu!",
+            nextLabel: " Tiếp theo →",
+            prevLabel: "← Quay lại",
+            skipLabel: "⊗",
             exitOnEsc: false,
             exitOnOverlayClick: false,
             disableInteraction: true,
             overlayOpacity: 0.9,
           });
-          
-          log('Tour options set', 'success');
+
+          log("Tour options set", "success");
 
           // iOS FIX: Make buttons more tappable
-          tour.onafterchange(function(targetElement) {
+          tour.onafterchange(function (targetElement) {
             try {
               const stepNum = this._currentStep + 1;
               log(`Step ${stepNum}/5 - onafterchange`);
-              
+
               setTimeout(() => {
                 try {
-                  const buttons = document.querySelectorAll('.introjs-button');
+                  const buttons = document.querySelectorAll(".introjs-button");
                   log(`Found ${buttons.length} buttons`);
-                  
+
                   buttons.forEach((button, idx) => {
-                    button.style.minHeight = '44px';
-                    button.style.minWidth = '88px';
-                    button.style.padding = '12px 20px';
-                    button.style.fontSize = '14px';
+                    button.style.minHeight = "44px";
+                    button.style.minWidth = "88px";
+                    button.style.padding = "12px 20px";
+                    button.style.fontSize = "14px";
                   });
                 } catch (err) {
-                  log(`Button setup error: ${err.message}`, 'error');
+                  log(`Button setup error: ${err.message}`, "error");
                 }
                 this.refresh();
               }, 50);
             } catch (err) {
-              log(`onafterchange error: ${err.message}`, 'error');
+              log(`onafterchange error: ${err.message}`, "error");
             }
           });
-          
-          tour.onbeforechange(function(targetElement) {
+
+          tour.onbeforechange(function (targetElement) {
             try {
               const nextStep = this._currentStep + 1;
               log(`onbeforechange: → Step ${nextStep}`);
-              
+
               if (targetElement) {
-                const tag = targetElement.tagName || 'unknown';
-                const className = targetElement.className || 'no-class';
-                const id = targetElement.id || 'no-id';
+                const tag = targetElement.tagName || "unknown";
+                const className = targetElement.className || "no-class";
+                const id = targetElement.id || "no-id";
                 log(`Target: ${tag}#${id}.${className}`);
-                
+
                 // Check if element is visible
                 const rect = targetElement.getBoundingClientRect();
                 const isVisible = rect.width > 0 && rect.height > 0;
-                log(`Element visible: ${isVisible}, size: ${rect.width}x${rect.height}`);
+                log(
+                  `Element visible: ${isVisible}, size: ${rect.width}x${rect.height}`
+                );
               } else {
-                log('Target: center (no element)');
+                log("Target: center (no element)");
               }
-              
+
               return true; // Allow transition
             } catch (err) {
-              log(`onbeforechange error: ${err.message}`, 'error');
+              log(`onbeforechange error: ${err.message}`, "error");
               return false; // Block transition on error
             }
           });
 
           tour.oncomplete(() => {
             try {
-              log('Tour completed!', 'success');
+              log("Tour completed!", "success");
               isRenderingPaused = false;
-              const canvasContainer = document.getElementById('canvas-container');
+              const canvasContainer =
+                document.getElementById("canvas-container");
               if (canvasContainer) {
-                canvasContainer.style.zIndex = '';
-                canvasContainer.style.opacity = '1';
-                canvasContainer.style.pointerEvents = 'auto';
+                canvasContainer.style.zIndex = "";
+                canvasContainer.style.opacity = "1";
+                canvasContainer.style.pointerEvents = "auto";
               }
             } catch (err) {
-              log(`oncomplete error: ${err.message}`, 'error');
+              log(`oncomplete error: ${err.message}`, "error");
             }
           });
 
           tour.onexit(() => {
             try {
-              log('Tour exited', 'error');
+              log("Tour exited", "error");
               isRenderingPaused = false;
-              const canvasContainer = document.getElementById('canvas-container');
+              const canvasContainer =
+                document.getElementById("canvas-container");
               if (canvasContainer) {
-                canvasContainer.style.zIndex = '';
-                canvasContainer.style.opacity = '1';
-                canvasContainer.style.pointerEvents = 'auto';
+                canvasContainer.style.zIndex = "";
+                canvasContainer.style.opacity = "1";
+                canvasContainer.style.pointerEvents = "auto";
               }
             } catch (err) {
-              log(`onexit error: ${err.message}`, 'error');
+              log(`onexit error: ${err.message}`, "error");
             }
           });
-          
+
           // Add error handler for intro.js internal errors
-          tour.onerror = function(stepIndex) {
-            log(`Intro.js ERROR at step ${stepIndex}`, 'error');
+          tour.onerror = function (stepIndex) {
+            log(`Intro.js ERROR at step ${stepIndex}`, "error");
           };
-          
         } catch (err) {
-          log(`initTour ERROR: ${err.message}`, 'error');
-          log(`Stack: ${err.stack}`, 'error');
+          log(`initTour ERROR: ${err.message}`, "error");
+          log(`Stack: ${err.stack}`, "error");
         }
       }
 
       // Global flag to pause rendering during tour
       let isRenderingPaused = false;
-      
+
       // Chạy tour khi trang load
-      window.addEventListener('load', () => {
+      window.addEventListener("load", () => {
         setTimeout(() => {
           try {
-            log('Initializing tour...');
+            log("Initializing tour...");
             initTour();
-            
+
             if (!tour) {
-              log('Tour object is NULL!', 'error');
+              log("Tour object is NULL!", "error");
               return;
             }
-            
-            log('Tour object created successfully', 'success');
-            
+
+            log("Tour object created successfully", "success");
+
             // CRITICAL iOS FIX: Lower canvas z-index instead of hiding
-            const canvasContainer = document.getElementById('canvas-container');
-            
+            const canvasContainer = document.getElementById("canvas-container");
+
             if (!canvasContainer) {
-              log('Canvas container NOT FOUND!', 'error');
+              log("Canvas container NOT FOUND!", "error");
             } else {
-              log('Canvas container found', 'success');
+              log("Canvas container found", "success");
             }
-            
+
             // Pause rendering when tour starts
-            tour.onbeforechange(function(targetElement) {
+            tour.onbeforechange(function (targetElement) {
               try {
                 isRenderingPaused = true;
                 if (canvasContainer) {
-                  canvasContainer.style.zIndex = '-1';
-                  canvasContainer.style.opacity = '0.1';
-                  canvasContainer.style.pointerEvents = 'none';
+                  canvasContainer.style.zIndex = "-1";
+                  canvasContainer.style.opacity = "0.1";
+                  canvasContainer.style.pointerEvents = "none";
                 }
-                log('Canvas paused (z:-1, opacity:0.1)');
+                log("Canvas paused (z:-1, opacity:0.1)");
               } catch (err) {
-                log(`Canvas pause error: ${err.message}`, 'error');
+                log(`Canvas pause error: ${err.message}`, "error");
               }
             });
-            
-            tour.oncomplete(function() {
+
+            tour.oncomplete(function () {
               try {
                 isRenderingPaused = false;
                 if (canvasContainer) {
-                  canvasContainer.style.zIndex = '';
-                  canvasContainer.style.opacity = '1';
-                  canvasContainer.style.pointerEvents = 'auto';
+                  canvasContainer.style.zIndex = "";
+                  canvasContainer.style.opacity = "1";
+                  canvasContainer.style.pointerEvents = "auto";
                 }
-                log('Tour complete - canvas resumed', 'success');
+                log("Tour complete - canvas resumed", "success");
               } catch (err) {
-                log(`Canvas resume error: ${err.message}`, 'error');
+                log(`Canvas resume error: ${err.message}`, "error");
               }
             });
-            
-            tour.onexit(function() {
+
+            tour.onexit(function () {
               try {
                 isRenderingPaused = false;
                 if (canvasContainer) {
-                  canvasContainer.style.zIndex = '';
-                  canvasContainer.style.opacity = '1';
-                  canvasContainer.style.pointerEvents = 'auto';
+                  canvasContainer.style.zIndex = "";
+                  canvasContainer.style.opacity = "1";
+                  canvasContainer.style.pointerEvents = "auto";
                 }
-                log('Tour exit - canvas resumed', 'error');
+                log("Tour exit - canvas resumed", "error");
               } catch (err) {
-                log(`Canvas resume error: ${err.message}`, 'error');
+                log(`Canvas resume error: ${err.message}`, "error");
               }
             });
-            
+
             // Force lower z-index before starting
             if (canvasContainer) {
-              canvasContainer.style.zIndex = '-1';
-              canvasContainer.style.opacity = '0.1';
-              log('Canvas pre-hidden for tour', 'success');
+              canvasContainer.style.zIndex = "-1";
+              canvasContainer.style.opacity = "0.1";
+              log("Canvas pre-hidden for tour", "success");
             }
             isRenderingPaused = true;
-            
-            log('Calling tour.start()...', 'success');
+
+            log("Calling tour.start()...", "success");
             tour.start();
-            log('tour.start() completed', 'success');
-            
+            log("tour.start() completed", "success");
           } catch (err) {
-            log(`Tour initialization ERROR: ${err.message}`, 'error');
-            log(`Stack: ${err.stack}`, 'error');
+            log(`Tour initialization ERROR: ${err.message}`, "error");
+            log(`Stack: ${err.stack}`, "error");
           }
         }, 500);
       });
@@ -915,9 +953,14 @@
         camera.position.z = 100;
 
         const isMobileRenderer = window.innerWidth <= 480;
-        renderer = new THREE.WebGLRenderer({ antialias: isMobileRenderer ? false : true, alpha: false });
+        renderer = new THREE.WebGLRenderer({
+          antialias: isMobileRenderer ? false : true,
+          alpha: false,
+        });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(isMobileRenderer ? 1 : Math.min(window.devicePixelRatio, 2));
+        renderer.setPixelRatio(
+          isMobileRenderer ? 1 : Math.min(window.devicePixelRatio, 2)
+        );
         container.appendChild(renderer.domElement);
 
         groupGold = createParticleSystem("gold", CONFIG.goldCount, 2.0);
@@ -1191,7 +1234,7 @@
           side: THREE.DoubleSide,
         });
         titleMesh = new THREE.Mesh(new THREE.PlaneGeometry(60, 15), mat);
-        
+
         const isMobileInit = window.innerWidth <= 480;
         titleMesh.position.set(0, isMobileInit ? 35 : 50, 0);
         scene.add(titleMesh);
@@ -1226,10 +1269,13 @@
           transparent: true,
           blending: THREE.AdditiveBlending,
         });
-        
+
         const isMobileStar = window.innerWidth <= 480;
         const starSize = isMobileStar ? 6 : 12;
-        starMesh = new THREE.Mesh(new THREE.PlaneGeometry(starSize, starSize), starMat);
+        starMesh = new THREE.Mesh(
+          new THREE.PlaneGeometry(starSize, starSize),
+          starMat
+        );
         starMesh.position.set(0, CONFIG.treeHeight / 2 + 2, 0);
         scene.add(starMesh);
 
@@ -1278,8 +1324,9 @@
           group.rotation.y += 0.003;
 
           const isMobileUpdate = window.innerWidth <= 480;
-          const shouldUpdateColor = !isMobileUpdate || (Math.floor(time * 30) % 2 === 0);
-          
+          const shouldUpdateColor =
+            !isMobileUpdate || Math.floor(time * 30) % 2 === 0;
+
           if (shouldUpdateColor) {
             for (let i = 0; i < count; i++) {
               sizes[i] = baseSize;
@@ -1356,12 +1403,12 @@
 
       function animate() {
         requestAnimationFrame(animate);
-        
+
         // CRITICAL iOS FIX: Skip rendering during tour
         if (isRenderingPaused) {
           return;
         }
-        
+
         const time = Date.now() * 0.001;
         const isMobileAnim = window.innerWidth <= 480;
         const speed = isMobileAnim ? 0.12 : 0.08;
@@ -1375,7 +1422,10 @@
           updateSnow(snowGroup, time);
         }
 
-        if (backgroundStars && (Math.floor(time * 30) % 2 === 0 || !isMobileAnim)) {
+        if (
+          backgroundStars &&
+          (Math.floor(time * 30) % 2 === 0 || !isMobileAnim)
+        ) {
           backgroundStars.rotation.y += 0.0005;
           const sizes = backgroundStars.geometry.attributes.size.array;
           for (let i = 0; i < sizes.length; i++) {
@@ -1451,11 +1501,14 @@
           loveMesh.visible = false;
           const isMobile = window.innerWidth <= 480;
           const photoScale = isMobile ? 3 : 5;
-          
+
           photoMeshes.forEach((mesh, i) => {
             if (i === selectedIndex) {
               mesh.position.lerp(new THREE.Vector3(0, 0, 60), 0.1);
-              mesh.scale.lerp(new THREE.Vector3(photoScale, photoScale, photoScale), 0.1);
+              mesh.scale.lerp(
+                new THREE.Vector3(photoScale, photoScale, photoScale),
+                0.1
+              );
               mesh.lookAt(camera.position);
               mesh.rotation.z = 0;
             } else {
@@ -1473,12 +1526,12 @@
         }
 
         document.getElementById("btnStart").style.display = "none";
-        
+
         // Hiển thị loading screen
-        const loadingScreen = document.getElementById('loading-screen');
-        loadingScreen.style.display = 'flex';
-        loadingScreen.style.opacity = '1';
-        
+        const loadingScreen = document.getElementById("loading-screen");
+        loadingScreen.style.display = "flex";
+        loadingScreen.style.opacity = "1";
+
         bgMusic.play().catch((e) => console.log(e));
         init3D();
 
@@ -1497,16 +1550,16 @@
         // Hàm ẩn loading screen
         const hideLoadingScreen = () => {
           if (cameraTimeout) clearTimeout(cameraTimeout);
-          loadingScreen.style.opacity = '0';
-          loadingScreen.style.transition = 'opacity 0.5s ease-out';
+          loadingScreen.style.opacity = "0";
+          loadingScreen.style.transition = "opacity 0.5s ease-out";
           setTimeout(() => {
-            loadingScreen.style.display = 'none';
+            loadingScreen.style.display = "none";
           }, 500);
         };
 
         // Hàm hiển thị cảnh báo timeout
         const showCameraTimeoutWarning = () => {
-          const warningDiv = document.createElement('div');
+          const warningDiv = document.createElement("div");
           warningDiv.style.cssText = `
             position: fixed;
             top: 50%;
@@ -1548,8 +1601,8 @@
             ">Tải lại trang</button>
           `;
           document.body.appendChild(warningDiv);
-          
-          loadingScreen.style.display = 'none';
+
+          loadingScreen.style.display = "none";
         };
 
         // Timeout 10 giây
