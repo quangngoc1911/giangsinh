@@ -226,6 +226,8 @@
         pointer-events: auto !important;
         -webkit-touch-callout: none !important;
         -webkit-user-select: none !important;
+        touch-action: manipulation !important;
+        -webkit-tap-highlight-color: rgba(255, 215, 0, 0.3) !important;
       }
 
       .introjs-button:hover {
@@ -546,7 +548,7 @@
           highlightClass: 'active-tour',
           buttonClass: 'introjs-button',
           showBullets: true,
-          scrollToElement: true,
+          scrollToElement: false, // CRITICAL: Disable scrolling on iOS
           padding: 15,
           doneLabel: '✨ Bắt đầu!',
           nextLabel: '→ Tiếp theo',
@@ -554,61 +556,105 @@
           skipLabel: '⊗',
           exitOnEsc: false,
           exitOnOverlayClick: false,
-          disableInteraction: false,
+          disableInteraction: true, // CRITICAL: Force disable interaction during tour
+          overlayOpacity: 0.9,
+        });
+
+        // iOS FIX: Add touch event listeners after tour initializes
+        tour.onafterchange(function(targetElement) {
+          setTimeout(() => {
+            const buttons = document.querySelectorAll('.introjs-button');
+            buttons.forEach(button => {
+              // Remove old listeners
+              button.replaceWith(button.cloneNode(true));
+            });
+            
+            // Re-query after clone
+            const newButtons = document.querySelectorAll('.introjs-button');
+            newButtons.forEach(button => {
+              button.style.cursor = 'pointer';
+              button.style.touchAction = 'manipulation';
+              
+              // Add both click and touchend for iOS
+              button.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.click();
+              }, { passive: false });
+            });
+          }, 100);
         });
 
         tour.oncomplete(() => {
           console.log('Tour hoàn thành!');
+          isRenderingPaused = false;
           const canvasContainer = document.getElementById('canvas-container');
           if (canvasContainer) {
-            canvasContainer.style.opacity = '1';
+            canvasContainer.style.visibility = 'visible';
             canvasContainer.style.pointerEvents = 'auto';
           }
         });
 
         tour.onexit(() => {
           console.log('Tour bị hủy');
+          isRenderingPaused = false;
           const canvasContainer = document.getElementById('canvas-container');
           if (canvasContainer) {
-            canvasContainer.style.opacity = '1';
+            canvasContainer.style.visibility = 'visible';
             canvasContainer.style.pointerEvents = 'auto';
           }
         });
       }
 
+      // Global flag to pause rendering during tour
+      let isRenderingPaused = false;
+      
       // Chạy tour khi trang load
       window.addEventListener('load', () => {
         setTimeout(() => {
           console.log('Khởi tạo tour...');
           initTour();
           if (tour) {
-            // iOS fix: Hide 3D canvas during tour to prevent z-index conflicts
+            // CRITICAL iOS FIX: Completely stop canvas rendering during tour
             const canvasContainer = document.getElementById('canvas-container');
             
+            // Pause rendering when tour starts
             tour.onbeforechange(function(targetElement) {
+              isRenderingPaused = true;
               if (canvasContainer) {
-                canvasContainer.style.opacity = '0.3';
+                canvasContainer.style.visibility = 'hidden';
                 canvasContainer.style.pointerEvents = 'none';
               }
+              console.log('Tour step - rendering paused');
             });
             
             tour.oncomplete(function() {
+              isRenderingPaused = false;
               if (canvasContainer) {
-                canvasContainer.style.opacity = '1';
+                canvasContainer.style.visibility = 'visible';
                 canvasContainer.style.pointerEvents = 'auto';
               }
+              console.log('Tour complete - rendering resumed');
             });
             
             tour.onexit(function() {
+              isRenderingPaused = false;
               if (canvasContainer) {
-                canvasContainer.style.opacity = '1';
+                canvasContainer.style.visibility = 'visible';
                 canvasContainer.style.pointerEvents = 'auto';
               }
+              console.log('Tour exit - rendering resumed');
             });
+            
+            // Force hide canvas before starting
+            if (canvasContainer) {
+              canvasContainer.style.visibility = 'hidden';
+            }
+            isRenderingPaused = true;
             
             tour.start();
           }
-        }, 300);
+        }, 500); // Increased timeout for iOS
       });
 
       // ==========================================
@@ -1167,6 +1213,12 @@
 
       function animate() {
         requestAnimationFrame(animate);
+        
+        // CRITICAL iOS FIX: Skip rendering during tour
+        if (isRenderingPaused) {
+          return;
+        }
+        
         const time = Date.now() * 0.001;
         const isMobileAnim = window.innerWidth <= 480;
         const speed = isMobileAnim ? 0.12 : 0.08;
