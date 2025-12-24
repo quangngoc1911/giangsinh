@@ -995,9 +995,9 @@
         });
         titleMesh = new THREE.Mesh(new THREE.PlaneGeometry(60, 15), mat);
         
-        // Responsive title position - đẩy xuống trên điện thoại
+        // Responsive title position - đẩy xuống trên điện thoại nhưng không che cây
         const isMobileInit = window.innerWidth <= 480;
-        titleMesh.position.set(0, isMobileInit ? 20 : 50, 0);
+        titleMesh.position.set(0, isMobileInit ? 35 : 50, 0);
         scene.add(titleMesh);
 
         const starCanvas = document.createElement("canvas");
